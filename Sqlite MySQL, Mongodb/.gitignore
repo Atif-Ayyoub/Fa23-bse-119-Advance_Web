@@ -1,7 +1,0 @@
-node_modules/
-**/node_modules/
-.env
-*.db
-database.db
-npm-debug.log
-.DS_Store
