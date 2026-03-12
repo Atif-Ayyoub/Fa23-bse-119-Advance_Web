@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var path = window.location.pathname || '/';
+        var query = window.location.search || '';
+        var hashTarget = '/#' + path + query;
+        window.location.replace(hashTarget);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
