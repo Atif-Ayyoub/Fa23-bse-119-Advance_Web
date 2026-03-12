@@ -4,6 +4,18 @@ import { api, extractErrorMessage } from '../../services/api.js';
 
 const fallbackCoverImage = 'https://placehold.co/300x400/11182D/E5ECF4?text=No+Cover';
 
+const getHighQualityCoverImage = (url) => {
+  if (!url) {
+    return fallbackCoverImage;
+  }
+
+  if (url.includes('images.gr-assets.com/books/')) {
+    return url.replace(/(\/books\/\d+)([ms])(?=\/)/i, '$1l');
+  }
+
+  return url;
+};
+
 function BookDetailsPage() {
   const { bookId } = useParams();
   const [book, setBook] = useState(null);
@@ -52,7 +64,7 @@ function BookDetailsPage() {
       <div className="row g-4 mb-4">
         <div className="col-12 col-md-4">
           <img
-            src={book.coverImage || fallbackCoverImage}
+            src={getHighQualityCoverImage(book.coverImage)}
             alt={book.title}
             className="book-cover"
             onError={(event) => {
