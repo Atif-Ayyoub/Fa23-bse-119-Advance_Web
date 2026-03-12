@@ -28,6 +28,12 @@ Create `server/.env` from `server/.env.example`:
 
 ```env
 PORT=5000
+MONGODB_URI=mongodb+srv://<db_user>:<db_password>@<cluster-name>.mongodb.net/library_management_system?retryWrites=true&w=majority&appName=<app-name>
+```
+
+For local-only development, you can still use:
+
+```env
 MONGODB_URI=mongodb://localhost:27017/library_management_system
 ```
 
@@ -75,7 +81,10 @@ npm run seed:books
 3. Keep framework as **Other**.
 4. Add environment variable:
    - `MONGODB_URI` = your MongoDB Atlas connection string.
-5. Deploy.
+   - Do not use `localhost` in Vercel env.
+5. In MongoDB Atlas Network Access, allow Vercel to connect (quick start: `0.0.0.0/0`).
+6. In MongoDB Atlas Database Access, ensure the DB user in URI has read/write permissions.
+7. Deploy.
 
 Backend routes will be available at:
 
