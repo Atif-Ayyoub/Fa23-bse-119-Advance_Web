@@ -56,6 +56,30 @@ cd server
 npm run seed:books
 ```
 
+## Deploy on Vercel (Frontend + Backend)
+
+### Backend deployment (Vercel)
+1. In Vercel, create a new project from this same GitHub repo.
+2. Set **Root Directory** to `Library Management System/server`.
+3. Keep framework as **Other**.
+4. Add environment variable:
+	- `MONGODB_URI` = your MongoDB Atlas connection string.
+5. Deploy.
+
+Backend routes will be available at:
+- `/api/health`
+- `/api/books`
+- `/api/members`
+- `/api/borrow-records`
+
+### Frontend deployment (Vercel)
+1. Create another Vercel project from the same repo.
+2. Set **Root Directory** to `Library Management System`.
+3. Add environment variable:
+	- `VITE_API_BASE_URL` = your backend Vercel URL + `/api`
+	  (example: `https://your-backend.vercel.app/api`)
+4. Deploy.
+
 ## 2) Folder Structure
 
 ```text
