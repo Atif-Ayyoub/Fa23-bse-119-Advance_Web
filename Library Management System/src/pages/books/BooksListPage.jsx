@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, extractErrorMessage } from '../../services/api.js';
 
 const fallbackCoverImage = 'https://placehold.co/300x400/11182D/E5ECF4?text=No+Cover';
+const booksCacheKey = 'lms_books_cache_v1';
 
 const getHighQualityCoverImage = (url) => {
   if (!url) {
@@ -21,13 +22,26 @@ function BooksListPage() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const loadBooks = async (search = '') => {
+  const pageSize = 24;
+
+  const persistBooksCache = (bookList) => {
+    try {
+      localStorage.setItem(booksCacheKey, JSON.stringify(bookList));
+    } catch {
+      // Ignore cache write failures.
+    }
+  };
+
+  const loadBooks = async () => {
     setLoading(true);
     setError('');
     try {
-      const response = await api.get('/books', { params: search ? { query: search } : {} });
+      const response = await api.get('/books');
       setBooks(response.data);
+      persistBooksCache(response.data);
+      setCurrentPage(1);
     } catch (requestError) {
       setError(extractErrorMessage(requestError, 'Failed to load books'));
     } finally {
@@ -36,13 +50,98 @@ function BooksListPage() {
   };
 
   useEffect(() => {
+    try {
+      const cachedBooksText = localStorage.getItem(booksCacheKey);
+      if (cachedBooksText) {
+        const cachedBooks = JSON.parse(cachedBooksText);
+        if (Array.isArray(cachedBooks)) {
+          setBooks(cachedBooks);
+          setLoading(false);
+        }
+      }
+    } catch {
+      // Ignore cache parse failures.
+    }
+
     loadBooks();
   }, []);
 
+  const filteredBooks = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return books;
+    }
+
+    return books.filter((book) => {
+      const title = String(book.title || '').toLowerCase();
+      const author = String(book.author || '').toLowerCase();
+      const category = String(book.category || '').toLowerCase();
+
+      return (
+        title.includes(normalizedQuery) ||
+        author.includes(normalizedQuery) ||
+        category.includes(normalizedQuery)
+      );
+    });
+  }, [books, query]);
+
+  const titleSuggestions = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return [];
+    }
+
+    const uniqueTitles = new Set();
+    const startsWithMatches = [];
+    const includesMatches = [];
+
+    for (const book of books) {
+      const title = String(book.title || '').trim();
+      if (!title) {
+        continue;
+      }
+
+      const normalizedTitle = title.toLowerCase();
+      if (!normalizedTitle.includes(normalizedQuery) || uniqueTitles.has(normalizedTitle)) {
+        continue;
+      }
+
+      uniqueTitles.add(normalizedTitle);
+
+      if (normalizedTitle.startsWith(normalizedQuery)) {
+        startsWithMatches.push(title);
+      } else {
+        includesMatches.push(title);
+      }
+    }
+
+    return [...startsWithMatches, ...includesMatches].slice(0, 10);
+  }, [books, query]);
+
   const summary = useMemo(
-    () => ({ total: books.length, available: books.filter((book) => book.availableCopies > 0).length }),
-    [books]
+    () => ({
+      total: filteredBooks.length,
+      available: filteredBooks.filter((book) => book.availableCopies > 0).length,
+    }),
+    [filteredBooks]
   );
+
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(filteredBooks.length / pageSize)), [filteredBooks.length]);
+
+  const visibleBooks = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredBooks.slice(startIndex, startIndex + pageSize);
+  }, [filteredBooks, currentPage]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query]);
 
   const handleDelete = async (bookId) => {
     if (!window.confirm('Delete this book?')) {
@@ -51,7 +150,7 @@ function BooksListPage() {
 
     try {
       await api.delete(`/books/${bookId}`);
-      await loadBooks(query);
+      await loadBooks();
     } catch (requestError) {
       setError(extractErrorMessage(requestError, 'Failed to delete book'));
     }
@@ -80,11 +179,18 @@ function BooksListPage() {
               className="form-control"
               placeholder="Search by title, author, or category"
               value={query}
+              autoComplete="off"
+              list="book-title-suggestions"
               onChange={(event) => setQuery(event.target.value)}
             />
+            <datalist id="book-title-suggestions">
+              {titleSuggestions.map((suggestedTitle) => (
+                <option key={suggestedTitle} value={suggestedTitle} />
+              ))}
+            </datalist>
           </div>
           <div className="col-12 col-md-4 d-flex gap-2">
-            <button type="button" className="btn btn-info w-100" onClick={() => loadBooks(query)}>
+            <button type="button" className="btn btn-info w-100" onClick={() => setCurrentPage(1)}>
               Search
             </button>
             <button
@@ -92,7 +198,7 @@ function BooksListPage() {
               className="btn btn-outline-light w-100"
               onClick={() => {
                 setQuery('');
-                loadBooks('');
+                setCurrentPage(1);
               }}
             >
               Reset
@@ -105,7 +211,7 @@ function BooksListPage() {
         <div className="alert alert-info">Loading books...</div>
       ) : (
         <div className="row g-4">
-          {books.map((book) => (
+          {visibleBooks.map((book) => (
             <div className="col-12 col-md-6 col-lg-4" key={book._id}>
               <div className="surface-card p-3 h-100">
                 <img
@@ -138,7 +244,33 @@ function BooksListPage() {
               </div>
             </div>
           ))}
-          {books.length === 0 && <div className="text-muted-soft">No books found.</div>}
+          {filteredBooks.length === 0 && <div className="text-muted-soft">No books found.</div>}
+        </div>
+      )}
+
+      {!loading && filteredBooks.length > pageSize && (
+        <div className="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
+          <p className="text-muted-soft mb-0">
+            Page {currentPage} of {totalPages}
+          </p>
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((previousPage) => Math.max(1, previousPage - 1))}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((previousPage) => Math.min(totalPages, previousPage + 1))}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </div>

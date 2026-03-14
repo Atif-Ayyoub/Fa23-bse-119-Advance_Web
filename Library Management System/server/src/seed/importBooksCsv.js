@@ -21,6 +21,8 @@ const normalizeYear = (yearText) => {
   return 2000;
 };
 
+const IMPORT_PREFIX = (process.env.IMPORT_PREFIX || 'KAGGLE').toString();
+
 const mapRowToBook = (row, rowIndex) => {
   const title = String(row.title || '').trim();
   const author = String(row.authors || '').trim();
@@ -36,13 +38,14 @@ const mapRowToBook = (row, rowIndex) => {
   return {
     title,
     author,
-    isbn: `KAGGLE-${sourceBookId}`,
+    isbn: `${IMPORT_PREFIX}-${sourceBookId}`,
     category: languageCode ? `Language: ${languageCode}` : 'General',
     publicationYear: normalizeYear(row.original_publication_year),
     totalCopies: 10,
     availableCopies: 10,
     shelfLocation: `R-${locationNumber}`,
     coverImage: String(row.image_url || '').trim(),
+    source: IMPORT_PREFIX,
   };
 };
 
