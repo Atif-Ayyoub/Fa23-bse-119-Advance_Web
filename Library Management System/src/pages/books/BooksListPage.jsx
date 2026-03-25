@@ -121,7 +121,7 @@ function BooksListPage() {
   const summary = useMemo(
     () => ({
       total: filteredBooks.length,
-      available: filteredBooks.filter((book) => book.availableCopies > 0).length,
+      available: filteredBooks.filter((book) => Number(book.availableCopies || 0) === Number(book.totalCopies || 0)).length,
     }),
     [filteredBooks]
   );
@@ -225,6 +225,31 @@ function BooksListPage() {
                 />
                 <h5 className="mb-1">{book.title}</h5>
                 <p className="text-muted-soft mb-1">{book.author}</p>
+                <p className="mb-1 d-flex align-items-center">
+                  <strong className="me-2">Rating:</strong>
+                  <span
+                    className="rating-stars"
+                    style={{ position: 'relative', display: 'inline-block', lineHeight: 1 }}
+                    aria-hidden
+                  >
+                    <span style={{ color: '#d1d5db' /* gray-300 */, fontSize: '1rem' }}>★★★★★</span>
+                    <span
+                      style={{
+                        color: '#f59e0b' /* amber-500 */,
+                        fontSize: '1rem',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        width: `${Math.max(0, Math.min(100, ((book.rating || 0) / 5) * 100))}%`,
+                      }}
+                    >
+                      ★★★★★
+                    </span>
+                  </span>
+                  <span className="text-muted-soft ms-2">({(book.rating || 0).toFixed(1)})</span>
+                </p>
                 <p className="mb-1">
                   <span className="badge text-bg-dark">{book.category}</span>
                 </p>

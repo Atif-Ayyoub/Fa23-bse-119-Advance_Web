@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import RecommendedBooksSection from '../../components/RecommendedBooksSection.jsx';
 import { api, extractErrorMessage } from '../../services/api.js';
 
 const fallbackCoverImage = 'https://placehold.co/300x400/11182D/E5ECF4?text=No+Cover';
@@ -21,6 +22,7 @@ function BookDetailsPage() {
   const [book, setBook] = useState(null);
   const [records, setRecords] = useState([]);
   const [error, setError] = useState('');
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
   useEffect(() => {
     const loadDetails = async () => {
@@ -39,6 +41,10 @@ function BookDetailsPage() {
     loadDetails();
   }, [bookId]);
 
+  useEffect(() => {
+    setShowRecommendations(false);
+  }, [bookId]);
+
   if (error) {
     return <div className="alert alert-danger">{error}</div>;
   }
@@ -52,6 +58,17 @@ function BookDetailsPage() {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="section-title mb-0">Book Details</h2>
         <div className="d-flex gap-2">
+          <button
+            type="button"
+            className="btn btn-outline-info"
+            onClick={() => setShowRecommendations(true)}
+            disabled={showRecommendations}
+          >
+            {showRecommendations ? 'Recommendations Shown' : 'Show Recommendations'}
+          </button>
+          <Link to="/borrow-records" className="btn btn-success">
+            Borrow Book
+          </Link>
           <Link to={`/books/${bookId}/edit`} className="btn btn-warning">
             Edit
           </Link>
@@ -83,6 +100,8 @@ function BookDetailsPage() {
           <p className="mb-0">Available Copies: {book.availableCopies}</p>
         </div>
       </div>
+
+      {showRecommendations && <RecommendedBooksSection bookId={bookId} title="Recommended Books" autoLoad />}
 
       <h5>Borrow Records</h5>
       <div className="table-responsive">

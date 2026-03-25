@@ -49,6 +49,12 @@ const bookSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    rating: {
+      type: Number,
+      default: 0,
+      min: [0, 'Rating cannot be negative'],
+      max: [5, 'Rating cannot exceed 5'],
+    },
   },
   {
     timestamps: true,

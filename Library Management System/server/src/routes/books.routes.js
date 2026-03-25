@@ -3,6 +3,7 @@ import {
   createBook,
   deleteBook,
   getBookById,
+  getRecommendedBooks,
   listBookBorrowRecords,
   listBooks,
   updateBook,
@@ -11,6 +12,7 @@ import {
 const booksRouter = Router();
 
 booksRouter.get('/', listBooks);
+booksRouter.get('/:bookId/recommendations', getRecommendedBooks);
 booksRouter.get('/:bookId', getBookById);
 booksRouter.post('/', createBook);
 booksRouter.put('/:bookId', updateBook);
