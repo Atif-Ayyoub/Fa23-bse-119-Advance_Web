@@ -1,0 +1,38 @@
+# .gitignore
+
+# Backend
+/backend/node_modules
+/backend/sports_management.db
+/backend/.env
+/backend/dist
+/backend/build
+
+# Frontend
+/frontend/node_modules
+/frontend/build
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# Dependencies
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs
+*.log
