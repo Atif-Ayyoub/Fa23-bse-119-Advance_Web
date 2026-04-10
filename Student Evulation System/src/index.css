@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--brand-ink: #0f172a;
+	--brand-accent: #0ea5e9;
+	--brand-warm: #f59e0b;
+	--brand-soft: #f8fafc;
+}
+
+body {
+	font-family: 'Space Grotesk', ui-sans-serif, system-ui;
+	color: var(--brand-ink);
+	background: var(--brand-soft);
+}
+
+/* Prevent roll numbers from wrapping and ensure a sensible minimum width */
+.roll-no-cell {
+  white-space: nowrap;
+  min-width: 12rem; /* enough for formats like FA22-BSE-098 */
+}
+
+/* Keep table responsive while preventing wrapping in specific columns */
+.no-wrap-column { white-space: nowrap; }
