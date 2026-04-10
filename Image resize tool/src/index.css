@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-display: Space Grotesk, Inter, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 min-h-screen bg-[#f8f7ff] text-[#12101d] antialiased transition-colors duration-300 dark:bg-[#0d111b] dark:text-[#f3f4ff];
+    background-image: radial-gradient(circle at 20% 0%, rgba(122, 92, 255, 0.1), transparent 35%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  * {
+    @apply border-transparent;
+  }
+}
+
+@layer components {
+  .app-container {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6 xl:px-8;
+  }
+
+  .section-gap {
+    @apply py-12 md:py-16 xl:py-20;
+  }
+
+  .panel {
+    @apply rounded-3xl border border-[#ddd9ef] bg-white/90 p-5 shadow-[0_24px_50px_-34px_rgba(27,20,69,0.45)] backdrop-blur-md md:p-6 xl:p-8 dark:border-[#2c3348] dark:bg-[#141a2b]/90;
+  }
+
+  .field-label {
+    @apply mb-2 block text-sm font-medium text-[#3f3a58] dark:text-[#c6cae6];
+  }
+
+  .input-base {
+    @apply h-13 w-full rounded-[14px] border border-[#dbd8ef] bg-white px-3.5 text-sm text-[#120f22] transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#7a5cff] dark:border-[#313954] dark:bg-[#0f1525] dark:text-[#f3f4ff] dark:focus:ring-[#8f7bff];
+  }
+
+  .btn-primary {
+    @apply inline-flex h-13 items-center justify-center rounded-[14px] bg-linear-to-r from-[#5b34f4] to-[#7a5cff] px-5 text-sm font-semibold text-white shadow-[0_14px_28px_-18px_rgba(90,58,255,0.8)] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:from-[#4f2fe0] hover:to-[#6a52f3] active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .btn-secondary {
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] border border-[#dbd8ef] bg-white px-5 text-sm font-semibold text-[#1a1730] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-[0_14px_28px_-20px_rgba(35,27,74,0.45)] active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-55 dark:border-[#313954] dark:bg-[#151c2f] dark:text-[#eef0ff];
+  }
+}
