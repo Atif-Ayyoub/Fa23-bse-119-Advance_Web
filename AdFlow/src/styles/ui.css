@@ -1,0 +1,152 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0.62rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: #1458c8;
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: #1046a0;
+}
+
+.btn--secondary {
+  background: #fff;
+  color: #1f2937;
+  border-color: #d1d5db;
+}
+
+.btn--secondary:hover {
+  background: #f3f4f6;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #334155;
+}
+
+.btn--ghost:hover {
+  background: #eef2ff;
+}
+
+.form-field {
+  display: block;
+}
+
+.form-field-label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input-control,
+.textarea-control {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.92rem;
+  padding: 0.65rem 0.8rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea-control {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.input-control:focus,
+.textarea-control:focus {
+  outline: none;
+  border-color: #1458c8;
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.14);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+  padding: 1.2rem;
+  box-shadow: 0 12px 35px -22px rgba(18, 32, 62, 0.4);
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.section-heading-title {
+  font-size: 1.4rem;
+  color: #0f172a;
+}
+
+.section-heading-subtitle {
+  font-size: 0.92rem;
+  color: #64748b;
+}
+
+.empty-state {
+  text-align: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-pill--default {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

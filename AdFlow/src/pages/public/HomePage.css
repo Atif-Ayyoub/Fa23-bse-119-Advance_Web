@@ -1,0 +1,150 @@
+.home-page {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 1.25rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hero {
+  border-radius: 28px;
+  padding: 1.4rem;
+  color: #f8fafc;
+  background: linear-gradient(140deg, #0f172a 0%, #1458c8 50%, #108a5a 100%);
+  border: 1px solid rgba(15, 23, 42, 0.35);
+}
+
+.hero-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.hero-kicker {
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #dbeafe;
+}
+
+.hero-title {
+  font-size: clamp(1.6rem, 5vw, 3.25rem);
+  line-height: 1.15;
+  color: #fff;
+}
+
+.hero-description {
+  margin-top: 0.8rem;
+  color: #f1f5f9;
+  max-width: 640px;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.hero-badges {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.hero-badge {
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  background: rgba(15, 23, 42, 0.45);
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+}
+
+.hero-pulse {
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 18px;
+  padding: 1rem;
+}
+
+.hero-pulse-title {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  color: #dbeafe;
+  font-weight: 700;
+}
+
+.hero-pulse-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hero-pulse-item {
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.hero-pulse-item p:first-child {
+  color: #cbd5e1;
+  font-size: 0.78rem;
+}
+
+.hero-pulse-value {
+  margin-top: 0.3rem;
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hero-pulse-item--wide {
+  grid-column: 1 / -1;
+}
+
+.home-grid-2 {
+  display: grid;
+  gap: 1rem;
+}
+
+.cta-strip {
+  border-radius: 24px;
+  padding: 1rem;
+  border: 1px solid #93c5fd;
+  background: linear-gradient(120deg, #1458c8 0%, #108a5a 100%);
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    padding: 1.9rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .home-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cta-strip {
+    padding: 1.25rem 1.4rem;
+  }
+}
